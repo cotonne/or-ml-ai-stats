@@ -215,11 +215,11 @@ x_1 & + & 2x_2 & \le & 16 \\
 
 
 \begin{matrix}
-\max Z = 44 - 1/2 u_1 - 3 u_3 \\
+\max Z = 44 - \dfrac{1}{2} u_1 - 3 u_3 \\
 s.t. \left|\begin{matrix}
 x_1 & = & 8 &  & & - u_1 & & \\
-u_2 & = & 2 &  & & - 1/2 u_1 & + u_3 & \\
-x_2 & = & 4 &  & & + 1/2 u_1 & - u_3 & \\
+u_2 & = & 2 &  & & - \dfrac{1}{2} u_1 & + u_3 & \\
+x_2 & = & 4 &  & & + \dfrac{1}{2} u_1 & - u_3 & \\
 \end{matrix}\right.
 \end{matrix}
 $$ 
@@ -242,11 +242,11 @@ Comme le résultat du PL ne doit pas changer, on a les mêmes variables hors bas
 
 $$
 \begin{matrix}
-\max Z = \alpha * (8 - u_1) + 3 * (4 + 1/2 u_1 - u_3) \\
+\max Z = \alpha * (8 - u_1) + 3 * (4 + \dfrac{1}{2} u_1 - u_3) \\
 s.t. \left|\begin{matrix}
 x_1 & = & 8 &  & & - u_1 & & \\
-u_2 & = & 2 &  & & - 1/2 u_1 & + u_3 & \\
-x_2 & = & 4 &  & & + 1/2 u_1 & - u_3 & \\
+u_2 & = & 2 &  & & - \dfrac{1}{2} u_1 & + u_3 & \\
+x_2 & = & 4 &  & & + \dfrac{1}{2} u_1 & - u_3 & \\
 \end{matrix}\right.
 \end{matrix}
 
@@ -256,8 +256,8 @@ x_2 & = & 4 &  & & + 1/2 u_1 & - u_3 & \\
 \max Z = (\alpha * 8 + 12) + (-\alpha + 3/2) * u_1 - 3 * u_3 \\
 s.t. \left|\begin{matrix}
 x_1 & = & 8 &  & & - u_1 & & \\
-u_2 & = & 2 &  & & - 1/2 u_1 & + u_3 & \\
-x_2 & = & 4 &  & & + 1/2 u_1 & - u_3 & \\
+u_2 & = & 2 &  & & - \dfrac{1}{2} u_1 & + u_3 & \\
+x_2 & = & 4 &  & & + \dfrac{1}{2} u_1 & - u_3 & \\
 \end{matrix}\right.
 \end{matrix}
 $$ 
@@ -266,6 +266,79 @@ Le PL reste stable tant que $(-\alpha + 3/2) \le 0 => 3/2 <= \alpha$.
 Pour chaque augmentation d'alpha, l'objectif augmente de 8.
 
 ## Second membre
+
+$$
+Z = x_1 + 3 x2 \\
+s.t. \left|\begin{matrix}
+x_1 &   &      & \le & 8 + \alpha\\
+    &   &  x_2 & \le & 6 \\
+x_1 & + & 2x_2 & \le & 16 \\
+\end{matrix}\right.
+$$
+
+En passant en forme standard: 
+
+$$
+Z = \ x_1 + 3 x2 \\
+s.t. \left|\begin{matrix}
+u_1 - \alpha & = & 8   & - & x_1 \\
+u_2 & = & 6   &   &     & - &  x_2 \\
+u_3 & = & 16  & - & x_1 & + & 2x_2 \\
+\end{matrix}\right.
+$$
+
+En posant $\hat{U_1} = u_1 - \alpha$, le PL reste le même.
+On a donc:
+
+$$
+\begin{matrix}
+\max Z = 44 - \dfrac{1}{2} \hat{U_1} - 3 u_3 \\
+s.t. \left|\begin{matrix}
+x_1 & = & 8 & - & \hat{U_1} \\
+u_2 & = & 2 & - & \dfrac{1}{2} \hat{U_1} & + u_3 \\
+x_2 & = & 4 & + & \dfrac{1}{2} \hat{U_1} & - u_3 \\
+\end{matrix}\right.
+\end{matrix}
+
+\Rightarrow
+
+\begin{matrix}
+\max Z = 44 - \dfrac{1}{2} (u_1 - \alpha) - 3 u_3 = (44 + \dfrac{1}{2} \alpha) - \dfrac{1}{2} u_1 - 3 u_3 \\
+s.t. \left|\begin{matrix}
+x_1 & = & 8 & - & (u_1 - \alpha)\\
+u_2 & = & 2 & - & \dfrac{1}{2} (u_1 - \alpha) & + u_3 \\
+x_2 & = & 4 & + & \dfrac{1}{2} (u_1 - \alpha) & - u_3 \\
+\end{matrix}\right.
+\end{matrix}
+$$
+
+Quand $\alpha$ augmente de 1, l'objectif augmente de 0.5. Le domaine de $\alpha$ se trouve avec les contraintes et en mettant les variables hors base à 0 :
+
+$$
+\begin{matrix}
+\left|\begin{matrix}
+8 & + \alpha & \ge & 0 \\
+2 & + & \dfrac{1}{2} \alpha & \ge & 0 \\
+4 & - & \dfrac{1}{2} \alpha & \ge & 0 \\
+\end{matrix}\right.
+\end{matrix}
+
+\Rightarrow
+
+-4 \le \alpha \le 8
+$$
+
+# Formulation problèmes courants
+
+## Plus court chemin
+
+## Max flow
+
+## TSP
+
+## pb du sac à dos
+
+## bin packing
 
 # Divers
 
@@ -289,16 +362,58 @@ if results.solver.status == SolverStatus.ok and results.solver.termination_condi
     print(f"x1 = {m.x[1].value}, x2 = {m.x[2].value}")
 ```
 
+# Résolutions de problèmes difficiles
+
+## Branch-and-bound / Branch-and-cut
+
+L'algorithme "Branch-and-bound" est basée sur une stratégie "diviser pour régner" (divide and conquer). L'idée est de partitionner l'espace des solutions en sous-ensembles que l'on cherche à résoudre.
+
+Considérons un problème de maximisation avec des variables entières.
+
+On trouve une solution optimale en relachant les contraintes d'intégrité sur les variables
+ * Si le PL n'a pas de solution alors on arrête l'évaluation de cette branche
+ * Si la solution est entière => on peut s'arrêter. Il s'agit de la meilleure solution sur cette branche. Cela donne aussi une borne minimale au problème.
+ * Si la valeur de la objective issue de la relaxation est inférieure à une solution acceptable du problème (respectant les contraintes d'intégrité), on arrête. On ne pourra pas trouver une solution encore meilleure que la solution acceptable.
+ * Sinon, on choisit une variable et on subdivise l'espace en deux: x_i <= |x| et |x| >= x_i et on recommence. On peut remarque qu'en ajoutant ces contraintes, on exclue la solution trouvée précédemment.
+
+Soit le PL suivant issu de https://web.mit.edu/15.053/www/AMP-Chapter-09.pdf: 
+
+$$
+\begin{matrix}
+\max Z = 5 x_1 + 8 x_2 \\
+s.t. \left|\begin{matrix}
+x_1 & + x_2 & \le & 6 & (1)\\
+5 x_1 & + 9 x_2 & \le & 45 & (2)\\
+x_1 , & x_2 & \in & \mathbb{N} & (3)
+\end{matrix}\right.
+\end{matrix}
+$$
+
+* **Etape 0**: On relaxe les contraintes d'intégrité (3), on résoud le PL ce qui nous donne une valeur objective  $z_0 = 41.25$. La valeur de la fonction objective de la  meilleure solution faisable de ce PL est forcément inférieur à 41.
+* **Etape 1**: On partitionne l'arbre en deux. On choisit d'évaluer L1.
+* **Etape 2**: On partitionne l'arbre en deux. 
+* **Etape 2.1**: On choisit d'évaluer L2. L2 n'est pas faisable, on arrête l'évaluation de la branche L2.
+* **Etape 2.2**: On évalue L4. On partionnne, on évalue L5. La solution est entière, on a donc une borne minimale de notre fonction objective: $37 \le z \le 41$. On évalut L6. On trouve une solution entière et une nouvelle borne meilleure que la précédente:  $40 \le z \le 41$
+* **Etape 3**: On évalue L2. La valeur de la solution optimale est inférieue à la borne précédente:  $39 \le 40 \le z \le 41$. On peut arrêter l'évaluation de L2.
+
+Ce qui donne l'arbre suivant:
+
+ ![Arbre d'exploration des solutions](branch-bound-tree.png)
+
+## Génération de colonnes / Branch-and-price
+
+## Relaxation Lagrangienne + gradient ou coupe de khelley
+
+## Linéarisation
+
+## 
+ * Matrice totalement unimodulaire => Relaxation car meilleur solution forcément entière
+
+# Divers
+
 ## TODO
 
- * Branch-and-cut
- * Branch-and-bound
- * Branch-and-price
- * Lagrangien + gradient ou coupe de khelley
- * Génération de colonne
- * Formulation problèmes
- * Linéarisation
- * Fonctions quadratiques
+ * Fonctions quadratiques (objectif)
 
 ## Démonstration
 
@@ -308,7 +423,12 @@ L'ensemble admissible du problème est un polyèdre convexe.
 
  [wikipedia-simplex]: https://fr.wikipedia.org/wiki/Algorithme_du_simplexe
 
-# Bibliographie
+Solution optimale du problème <=> point du polyèdre convexe
 
- * Livre Alain Billionet
+## Bibliographie et références
+
+ * [RCP101](https://formation.cnam.fr/rechercher-par-discipline/recherche-operationnelle-et-aide-a-la-decision-208739.kjsp) du CNAM
+ * [RPC104](https://formation.cnam.fr/rechercher-par-discipline/optimisation-en-informatique-208741.kjsp) du CNAM
+ * Alain Billionnet : Optimisation discrète (Dunod)
  * Theorie des graphes
+ * https://moodle.caseine.org/
