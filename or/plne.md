@@ -330,15 +330,83 @@ $$
 
 # Formulation problèmes courants
 
-## Plus court chemin
+## Problème du sac à dos
+
+L'objet i a les propriétés suivantes:
+
+ - Un poids $w_i$
+ - Un coût $c_i$
+ - Un variable $x_i$ qui vaut 1 si l'objet est chargé.
+
+On cherche à maximiser la coût d'objets chargés dans le sac à dos sans dépasser la capacité C du sca.
+
+$$
+\max z = \sum x_{i} c_{i} \\
+s.t. 
+\sum x_{i}  w_{i} \le c \\
+$$
 
 ## Max flow
 
+$$
+\max z = \sum x_{ij} \times w_{ij} \\
+s.t. 
+\sum f_{ij} = \sum f_{ji}, \forall v \in \mathbb{V} - \{s, t\} \ (1)
+$$
+
+La contrainte (1) est la règle de conservation des flux.
+
+## Plus court chemin
+
+Plus court chemin pour aller du noeud s au noeud t
+
+$$
+\min z = \sum x_{ij} \times w_{ij} \\
+s.t. 
+ \left|\begin{matrix}
+ \sum x_{ij} & - & \sum x_{ks} & = & 0 & (1)\\ 
+ \sum x_{si} & - & \sum x_{is} & = & 1 \\ 
+ \sum x_{ti} & - & \sum x_{it} & = & -1 \\ 
+\end{matrix}\right.
+$$
+
+On modélise le plus court chemin comme un problème de flot max avec un flux égal à 1.
+
+## Bin packing
+
+**Objectif**: ranger les objets dans un minimum de boites
+
+Soit les variables suivantes:
+ 
+  - $x_i$ égal à 1 si la boite i est utilisé.
+  - $y_{ij}$ égal à 1 si l'objet j est dans la boite i
+
+Soit les paramètres suivants:
+
+  - $c_j$, le coût de l'objet j
+  - $C_i$, la capacité d'un boite i
+
+$$
+\min z = \sum x_i \\
+s.t. 
+ \left|\begin{matrix}
+ \sum y_{ij} c_j & \le & C_i & \forall i & (1)\\ 
+ \sum y_{ij} & \le & x_i & \forall i & (2) \\
+ \sum y_{ij} & \ge & 1 & \forall j & (3) \\
+\end{matrix}\right.
+$$
+
+Contraintes:
+
+ - L'inégalité 1 assure qu'il n'y a pas plus d'objets que la boite peut contenir
+ - L'inégalité 2 assure que, si la boite contient un objet, alors $x_i$ vaut 1
+ - L'inégalité 3 assure que tous les objets sont bien placés dans une boite
+
+
 ## TSP
 
-## pb du sac à dos
 
-## bin packing
+
 
 # Divers
 
@@ -400,13 +468,102 @@ Ce qui donne l'arbre suivant:
 
  ![Arbre d'exploration des solutions](branch-bound-tree.png)
 
+## Relaxation Lagrangienne
+
+Le principe de la relaxation lagrangian est d'inclure les contraintes difficiles dans la fonction objective et de chercher à optimiser successivement les multiplicateurs de Lagrange et la fonction.
+
+Partons du problème du plus court chemin avec contrainte :
+
+$$
+\min z = \sum x_{ij} \times w_{ij} \\
+s.t. 
+ \left|\begin{matrix}
+ \sum x_{ij} & - & \sum x_{ks} & = & 0 & (1)\\ 
+ \sum x_{si} & - & \sum x_{is} & = & 1 & (2)\\ 
+ \sum x_{ti} & - & \sum x_{it} & = & -1 & (3)\\ 
+ \sum x_{ij} c_{ij} \lt C  & (4) \\ 
+\end{matrix}\right.
+$$
+
+On peut relaxer le problème en introduisant la contrainte (4) dans la fonction objectif:
+
+$$
+\min_z \mathcal{L}(z, \lambda) = \sum x_{ij} \times w_{ij} + \lambda * (\sum x_{ij} c_{ij}  - C)\\
+s.t. 
+ \left|\begin{matrix}
+ \sum x_{ij} & - & \sum x_{ks} & = & 0 & (1)\\ 
+ \sum x_{si} & - & \sum x_{is} & = & 1 & (2)\\ 
+ \sum x_{ti} & - & \sum x_{it} & = & -1 & (3)\\ 
+\end{matrix}\right. \\
+\lambda \gt 0
+$$
+
+Ce qui nous donne le dual lagrangian suivant:
+
+$$
+\max_{\lambda} \min_z \mathcal{L}(z, \lambda) = \sum x_{ij} (w_{ij} + \lambda c_{ij}) - \lambda C\\
+s.t. 
+ \left|\begin{matrix}
+ \sum x_{ij} & - & \sum x_{ks} & = & 0 & (1)\\ 
+ \sum x_{si} & - & \sum x_{is} & = & 1 & (2)\\ 
+ \sum x_{ti} & - & \sum x_{it} & = & -1 & (3)\\ 
+\end{matrix}\right.
+$$
+
+On va alors calculer minimiser z puis maximiser $\lambda$. On répète ces deux phases jusqu'à convergence.
+
+### Phase 1: minimisation z
+
+On suppose que $\lambda$ est constante. Dans ce cas, on retrouve le problème du plus court chemin avec des poids modifiés: $w_{ij} + \lambda c_{ij}$.
+
+On trouve donc les $x_{ij}$ en utilisant résolvant le PLNE ou en utilisant l'algorithme de Dijkstra.
+
+### Phase 2: maximisation Lambda
+
+On suppose que $x_{ij}$ est constante. Il va nous falloir trouver une nouvelle valeur pour $\lambda$ pour maximiser $\mathcal{L}(z, \lambda) = \sum x_{ij} (w_{ij} + \lambda c_{ij}) - \lambda C$
+
+#### Sous-gradient
+
+La fonction $\mathcal{L}(z, \lambda)$ n'est pas forcément dérivable partout. On calcule donc le sous-gradient de la fonction.
+
+On a $\frac{\partial \mathcal{L}}{\partial \lambda} = \sum  x_{ij} c_{ij} - C $
+
+On calcule alors $\lambda \leftarrow \lambda + \theta_k  \mathcal{L}'$, avec $\theta_k = \alpha_k  \frac{[UB - \mathcal{L}]}{\mathcal{L}'}$. UB est une borne supérieure du problème. En pratique on choisit $\alpha_k = 2$ que l'on divise par deux si l'on n'a pas réussi à améliorer $\mathcal{L}$ après plusieurs itérations.
+
+
+#### Coupe de Kelley
+
+A chaque étape, on ajoute un plan qui va contraindre de plus en plus le problème.
+On résout un plan secondaire :
+
+$$
+\min_{\lambda} \eta \\
+s.t.\ \eta \ge \mathcal{L}(x, \lambda_n) - \nabla \mathcal{L}(x, \lambda_n) * (x - \lambda_n)
+$$
+
+### Références
+
+ - Chapitre 16 "Lagrangian Relaxation and Network Optimisation" du livre "Network Flows" d'Ahuja
+ - [Méthodes de plans secants et de faisceaux](https://perso.ensta-paris.fr/~pcarpent/SOD314/Cours/3-Methodes-Faisceaux.pdf)
+
 ## Génération de colonnes / Branch-and-price
 
-## Relaxation Lagrangienne + gradient ou coupe de khelley
 
 ## Linéarisation
 
-## 
+### Produit de deux variables binaires
+
+Une contrainte xy peut être linéarisé en introduisant une variable $z = xy$:
+
+$$
+z \lt x \\
+z \lt y \\
+x + y - 1 \lt z \\
+$$
+
+
+## Autres
+
  * Matrice totalement unimodulaire => Relaxation car meilleur solution forcément entière
 
 # Divers
