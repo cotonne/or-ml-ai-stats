@@ -392,7 +392,7 @@ s.t.
  \left|\begin{matrix}
  \sum y_{ij} c_j & \le & C_i & \forall i & (1)\\ 
  \sum y_{ij} & \le & x_i & \forall i & (2) \\
- \sum y_{ij} & \ge & 1 & \forall j & (3) \\
+ \sum y_{ij} & = & 1 & \forall j & (3) \\
 \end{matrix}\right.
 $$
 
@@ -405,8 +405,34 @@ Contraintes:
 
 ## TSP
 
+$$
+\min z = \sum c_{ij} x_{ij} \\
+s.t. 
+ \left|\begin{matrix}
+ \sum_{i=1}^N x_{ij} & = 1 & \forall j & (1)\\ 
+ \sum_{j=1}^N x_{ij} & = 1 & \forall j & (2)\\ 
+ t_i - B(1 - x_{ij}) & \le t_j & \forall i,j & (3)\\ 
+ \sum_{(i,j) \in E} x_{ij} & \le |S| - 1 & \forall S \in V, V \ne S & (3')\\ 
+\end{matrix}\right.
+$$
 
+Contraintes:
+ - Les contraintes (1) et (2) assurent que tous les neouds sont visités une fois (on utilise un arc pour entrée et un pour sortir)
+  - Pour éliminer les sous-tours, on a le choix avec une des deux contraintes
+    * (3) : Miller, Tucker, Zemlin: on ajoute une contrainte temporelle (B est une valeur très grande)
+    * (3') : Dantzig, Fulkerson, Jhonson: Quel que soit un sous-graphe de G, les liens utilisés forment une chaîne.
 
+Pour la contrainte (3') Cependant, on a $2^{|S|}$ parties possibles, rendant ce modèle non compact. Pour résoudre ce problème, on peut utiliser une approche itérative
+
+ 0. Créer le problème avec (1) et (2)
+ 1. Résoudre le problème
+ 1. Si le problème ne contient pas de des sous-tours, retourner le résultat
+ 2. Si le problème contient des des sous-tours, ajouter une contrainte (3') pour empêcher le sous-tour
+ 3. Retourner à 1
+
+Réf:
+
+ - [Exemple d'implémentation](https://medium.com/swlh/techniques-for-subtour-elimination-in-traveling-salesman-problem-theory-and-implementation-in-71942e0baf0c)
 
 # Divers
 
@@ -548,6 +574,13 @@ $$
 
 ## Génération de colonnes / Branch-and-price
 
+La méthode de génération de colonnes est utilisé quand un nombre important de variables est présent.
+Le principe est d'initialisé un sous-ensemble des variables et d'ajouter de nouvelles variables
+au fur et à mesure à partir des informations provenant des variables duales.
+
+Réf:
+
+ - [Bin packing and cutting stock problems](https://scipbook.readthedocs.io/en/latest/bpp.html) : 
 
 ## Linéarisation
 
@@ -589,3 +622,5 @@ Solution optimale du problème <=> point du polyèdre convexe
  * Alain Billionnet : Optimisation discrète (Dunod)
  * Theorie des graphes
  * https://moodle.caseine.org/
+ * [OPTAPLANNER](https://www.optaplanner.org/) : outil d'optimisation
+ * [Mathematical Optimization: Solving Problems using SCIP and Python](https://scipbook.readthedocs.io/en/latest/)
