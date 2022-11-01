@@ -5,3 +5,7 @@ Ce repository contient les notes accumulées suite aux cours suivis au CNAM:
  - [stats](stats/README.md)
  - [NLP](nlp/README.md)
  - [OR](or/README.md)
+
+TODO:
+ - Apprentissage semi-supervisé / Contractive Learning
+ - Comparaison des modèles, explicabilité
