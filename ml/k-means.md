@@ -41,4 +41,7 @@ Traiter des données quelconques (non vectorielles) pour lesquelles une métriqu
 ## TODO
 
  - Avantages/Incovénients (complexité/explicabilité)
+
+ - Simple à comprendre, à expliquer
+ - Fragile face au
  - 
