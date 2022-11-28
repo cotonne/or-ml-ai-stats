@@ -434,6 +434,33 @@ Réf:
 
  - [Exemple d'implémentation](https://medium.com/swlh/techniques-for-subtour-elimination-in-traveling-salesman-problem-theory-and-implementation-in-71942e0baf0c)
 
+## Location facility
+
+Minimiser le coût d'installation des entrepôts
+
+Paramètres:
+
+ - $d_i$: coût d'installation de l'entrepôt sur le site i
+ - $c_{ij}$: coût pour livrer le client j depuis le site i
+
+Variables:
+
+ - $x_i$: égale à 1 si l'entrepôt est placé sur le site i
+ - $y_{ij}$: égale à 1 si l'u
+
+$$
+\min \sum_i \sum_j c_{ij} y_{ij} + \sum_j d_i x_i \\
+s.t. \\
+\sum_i y_{ij} = 1 \forall j (1) \\
+\sum_j y_ij \lt x_i \forall i (2)
+$$
+
+Contraintes:
+
+ - (1): assure que tous les clients sont servis
+ - (2): si $y_{ij}$ alors $x_i$ - si le client j est servi par l'entrepôt i, alors l'entrepôt est installé en i
+
+
 # Divers
 
 ## Résoudre le problème
