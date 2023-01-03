@@ -616,11 +616,47 @@ Réf:
 Une contrainte xy peut être linéarisé en introduisant une variable $z = xy$:
 
 $$
-z \lt x \\
-z \lt y \\
-x + y - 1 \lt z \\
+z \le x \\
+z \le y \\
+x + y - 1 \le z \\
 $$
 
+### Abs
+
+Une contrainte $x \ge |A|$ peut être linéarisé par:
+
+$$
+x \ge A \\
+x \ge -A
+$$
+
+### Max / Min
+
+Une contrainte $x \ge max(A, B)$ peut être linéarisé par:
+
+$$
+x \ge A \\
+x \ge B
+$$
+
+Une contrainte $x \le max(A, B)$ peut être linéarisé en écrivant $x \le min(A, B) + |A - B|$:
+
+$$
+x \le A + S^- + S^+ \\
+x \le B + S^- + S^+ \\
+S^- \ge B - A \\
+S^+ \ge A - B \\
+x \ge B
+$$
+
+Only one of the $S^-/S^+$ will be different from 0.
+
+Inverse for min
+
+### References
+
+ - https://www.leandro-coelho.com/how-to-linearize-max-min-and-abs-functions/
+ - https://yetanothermathprogrammingconsultant.blogspot.com/2016/02/xor-as-linear-inequalities.html
 
 ## Autres
 
