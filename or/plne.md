@@ -5,7 +5,6 @@
 ### Définitions
 
  * z: fonction de coût que l'on cherche à minimiser/maximiser
- * 
 
 ### Forme canonique
 
@@ -106,7 +105,7 @@ $$
 u_1 & = &  8 & - & x_1 & \ge & 0 & (1) \\
 u_2 & = &  6 &   &     & \ge & 0 & (2) \\
 u_3 & = & 15 & - & x_1 & \ge & 0 & (3) \\
-\end{matrix}\right.\\
+\end{matrix}\right.
 $$
 
 L'équation (1) est la plus contraignante. $u_1$ entre en base.
@@ -118,7 +117,7 @@ $$
 x_1 & = &  8 & - & u_1 & \ge & 0 & (1) \\
 u_2 & = &  6 &   &     & \ge & 0 & (2) \\
 u_3 & = & 15 & - & x_1 & \ge & 0 & (3) \\
-\end{matrix}\right.\\
+\end{matrix}\right.
 $$
 
 ### Phase 3: arrêt?
@@ -227,7 +226,7 @@ $$
 
 ## Fonction Objective
 
-On rremplace le paramètre C pour la variable $x_1$ par $\alpha$ : 
+On remplace le paramètre C pour la variable $x_1$ par $\alpha$ : 
 $$
 Z_\alpha = \alpha\ x_1 + 3 x2 \\
 s.t. \left|\begin{matrix}
@@ -433,6 +432,8 @@ Pour la contrainte (3') Cependant, on a $2^{|S|}$ parties possibles, rendant ce 
 Réf:
 
  - [Exemple d'implémentation](https://medium.com/swlh/techniques-for-subtour-elimination-in-traveling-salesman-problem-theory-and-implementation-in-71942e0baf0c)
+ - Capacitated Multitrip Vehicle-Routing Problem With Time Window
+ - Multi-depot vehicle routing problem
 
 ## Location facility
 
@@ -587,7 +588,7 @@ On calcule alors $\lambda \leftarrow \lambda + \theta_k  \mathcal{L}'$, avec $\t
 #### Coupe de Kelley
 
 A chaque étape, on ajoute un plan qui va contraindre de plus en plus le problème.
-On résout un plan secondaire :
+On résout un plan/programme secondaire :
 
 $$
 \min_{\lambda} \eta \\
