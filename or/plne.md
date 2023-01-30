@@ -410,15 +410,20 @@ s.t.
  \left|\begin{matrix}
  \sum_{i=1}^N x_{ij} & = 1 & \forall j & (1)\\ 
  \sum_{j=1}^N x_{ij} & = 1 & \forall j & (2)\\ 
+
+ t_1 = 1 (3) \\ 
+ 2 \le u_i \le n (3) \\
  t_i - B(1 - x_{ij}) & \le t_j & \forall i,j & (3)\\ 
+ 
  \sum_{(i,j) \in E} x_{ij} & \le |S| - 1 & \forall S \in V, V \ne S & (3')\\ 
-\end{matrix}\right.
+\
+end{matrix}\right.
 $$
 
 Contraintes:
  - Les contraintes (1) et (2) assurent que tous les neouds sont visités une fois (on utilise un arc pour entrée et un pour sortir)
   - Pour éliminer les sous-tours, on a le choix avec une des deux contraintes
-    * (3) : Miller, Tucker, Zemlin: on ajoute une contrainte temporelle (B est une valeur très grande)
+    * (3) : Miller, Tucker, Zemlin: on ajoute une contrainte temporelle (B est une valeur très grande). Pareil que $u_i - u_j + 1 \le (n-1)(1-x_{ij})$? Si $x_{ij} = 0$, il n'y a pas de contrainte entre $u_i$ et $u_j$. Sinon $u_j$ doit être plus grand que $_ui$ d'au moins 1.
     * (3') : Dantzig, Fulkerson, Jhonson: Quel que soit un sous-graphe de G, les liens utilisés forment une chaîne.
 
 Pour la contrainte (3') Cependant, on a $2^{|S|}$ parties possibles, rendant ce modèle non compact. Pour résoudre ce problème, on peut utiliser une approche itérative
@@ -461,6 +466,23 @@ Contraintes:
  - (1): assure que tous les clients sont servis
  - (2): si $y_{ij}$ alors $x_i$ - si le client j est servi par l'entrepôt i, alors l'entrepôt est installé en i
 
+## Minimize makespan on parallel machines
+
+On a j objets à produire sur i machines. Chaque objet prend p_j minutes à produire.
+
+$x_{ij} = 1$ si l'objet j est associé à la machine j
+
+On cherche à minimiser la fin du traitement w.
+
+$$
+\min w \\
+s.t.\\
+w >= \sum p_j x_{ij} \forall i \in I (1)\\
+\sum x_{ij} = 1 \forall j \in J (2)\\
+$$
+
+La contrainte (1) contraint la durée w à être supérieure à la machine avec le plus long fonctionnement.
+La contrainte (2) assure qu'un objet est produit une fois par une machine.
 
 # Divers
 
@@ -658,6 +680,36 @@ Inverse for min
 
  - https://www.leandro-coelho.com/how-to-linearize-max-min-and-abs-functions/
  - https://yetanothermathprogrammingconsultant.blogspot.com/2016/02/xor-as-linear-inequalities.html
+
+### Deux contraintes à satisfaire
+
+Soit deux contraintes:
+
+ * f(x) <= b1 (1)
+ * g(x) <= b2 (2)
+
+On veut satisfaire une des deux contraintes uniquements.
+
+On définit une variable binaire z qui vaut 0 si la contrainte 1 est sélectionné, 1 si c'est la contrainte 2 qui est choisie.
+
+On choisit un grand M et on remplace les contraintes par:
+
+ * f(x) - b1 <= M * z
+ * g(x) - b2 <= M * (1 - z)
+
+### Deux contraintes parmi 3 à satisfaire
+
+Soit trois contraintes de la forme f_i(x) <= b_i
+
+On veut satisfaire une des deux contraintes uniquements.
+
+On définit une variable binaire z_i qui vaut 0 si la contrainte i est sélectionné, 0 sinon
+
+On choisit un grand M et on remplace les contraintes par:
+
+ * f_i(x) - b_i <= M * z pour chaque i
+ * z_1 + z_2 + Z_3 >= 3
+
 
 ## Autres
 
