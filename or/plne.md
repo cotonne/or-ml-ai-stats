@@ -632,25 +632,102 @@ Réf:
 
  - [Bin packing and cutting stock problems](https://scipbook.readthedocs.io/en/latest/bpp.html) : 
 
+# Non-Linear Programming
+
+## General formulation
+
+$$
+min f(x) \\
+s.t. g_i(x) \le b_i
+$$
+
+Non-linear programming si f ou g_i est non-linéaire.
+
+## Exemples
+
+### Portfolio optimisation
+
+On veut constuire un porte-feuille d'actions pour atteindre un revenu donné tout en minimisant le risque.
+
+$$
+min \sum \sigma_i^2 x_i^2 + 2 \sum \sum \sigma_{ij} x_i x_j \\
+s.t. \sum p_i x_i \le B\ (1) \\
+\sum u_i x_i \ge R\ (2)
+$$
+
+Variables:
+ * $x_i$: nombre d'actions i à acheter
+
+Paramètres:
+ * $\sigma_i^2$ et $\sigma_{ij}$: Variance & covariance des actions
+ * $p_i$: le prix de l'action
+ * $u_i$: revenu de l'action
+ * B: Budget à investir
+ * R: Revenu escompté
+
 ## Linéarisation
 
+### min d'une fonction max:
+
+$min max {x_i}$ devient:
+
+$$
+min w \\
+s.t. w \ge x_i \forall i
+$$
+
+**Exemple**: minimisrer la distance de Manhattan $min \sum ([x - x_i| + -|y - y_i|)$
+devient:
+
+$$
+min \sum (u_i + v_i) \\
+s.t.\\
+u_i \ge x - x_i \\
+u_i \ge x_i - x \\
+v_i \ge y - y_i \\
+v_i \ge y_i - y \\
+$$
+
 ### Produit de deux variables binaires
+
+Un objectif de type $max xy$ peut peut être linéarisé en introduisant une variable $z = xy$
+
+$$
+max z
+z \le x \\
+z \le y \\
+$$
+
+L'objectif va forcer z à être maximal.
 
 Une contrainte xy peut être linéarisé en introduisant une variable $z = xy$:
 
 $$
 z \le x \\
 z \le y \\
-x + y - 1 \le z \\
+x + y - 1 \le z \ (1) \\
 $$
 
-### Abs
+La contrainte (1) peut être ignoré si on a une contrainte du type $a \le xy$.
+
+### Abs dans une contrainte
 
 Une contrainte $x \ge |A|$ peut être linéarisé par:
 
 $$
 x \ge A \\
 x \ge -A
+$$
+
+Une valeur absolue peut être écrire sous la forme : |A| = max{-A, A}
+
+### Abs dans un objectif
+
+Un objectif $min |A|$ devient:
+
+$$
+min w \\
+s.t. w \ge |A|
 $$
 
 ### Max / Min
@@ -707,13 +784,14 @@ On définit une variable binaire z_i qui vaut 0 si la contrainte i est sélectio
 
 On choisit un grand M et on remplace les contraintes par:
 
- * f_i(x) - b_i <= M * z pour chaque i
- * z_1 + z_2 + Z_3 >= 3
+ * f_i(x) - b_i <= M * z_i pour chaque i
+ * z_1 + z_2 + Z_3 >= 2
 
 
 ## Autres
 
  * Matrice totalement unimodulaire => Relaxation car meilleur solution forcément entière
+
 
 # Divers
 
