@@ -818,3 +818,5 @@ Solution optimale du problème <=> point du polyèdre convexe
  * https://moodle.caseine.org/
  * [OPTAPLANNER](https://www.optaplanner.org/) : outil d'optimisation
  * [Mathematical Optimization: Solving Problems using SCIP and Python](https://scipbook.readthedocs.io/en/latest/)
+ * Chvatal, Vasek : Linear Programming
+ * Ravindra Ahuja : Network Flows: Theory, Algorithms, and Applications
