@@ -784,8 +784,8 @@ On définit une variable binaire z_i qui vaut 0 si la contrainte i est sélectio
 
 On choisit un grand M et on remplace les contraintes par:
 
- * f_i(x) - b_i <= M * z_i pour chaque i
- * z_1 + z_2 + Z_3 >= 2
+ * `$f_i(x) - b_i \leq M * z_i$ pour chaque i
+ * $z_1 + z_2 + Z_3 >= 2$
 
 
 ## Autres
