@@ -6,3 +6,7 @@
  - Relaxation Surrogate: https://www.lancaster.ac.uk/staff/letchfoa/articles/surrogate-matheuristic.pdf
  - [Matrice SDP](https://cahier-de-prepa.fr/psi-vauban/download?id=749)
  - [Playlist "Convex Optimization|Standford"]https://www.youtube.com/playlist?list=PL3940DD956CDF0622
+ - [Augmented Lagrangian](https://en.wikipedia.org/wiki/Augmented_Lagrangian_method)
+ - Multi-objective, Pareto-optimal solution, dominance
+ - Conic programming
+ - Gomory Cuts
